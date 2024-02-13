@@ -1,0 +1,239 @@
+{
+	"name": "pl_SQl_ADLS_incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Getlastwatermarkvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "newwatermarkvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from ',activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqltablefullname,\n' where ModifiedDate > ','''',activity('Getlastwatermarkvalue').output.firstRow.lastwatermarkvalue,'''',\n' and ModifiedDate <= ','''',\nactivity('newwatermarkvalue').output.firstRow.ModifiedDate,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADVSQLsource",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_ADLS_sink",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "getcopyactivitysinksqltoadls",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[getcopyactivitysinksqltoadls]",
+						"storedProcedureParameters": {
+							"copyactivitysqlscriptname": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.copyactivitysqlscriptname",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Ds_frameworkdb",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Getlastwatermarkvalue",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "getcopyactivitysinksqltoadls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[getlastwatermarkvalue]",
+						"storedProcedureParameters": {
+							"copyactivitysqlscriptname": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.copyactivitysqlscriptname",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "Ds_frameworkdb",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "newwatermarkvalue",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "getcopyactivitysinksqltoadls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select MAX(ModifiedDate) as modifieddate from ', activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqltablefullname)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_ADVSQLsource",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[logwatermarkvalue]",
+					"storedProcedureParameters": {
+						"copyactivitysqlscriptname": {
+							"value": {
+								"value": "@pipeline().parameters.copyactivitysqlscriptname",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"currentwatermarkvalue": {
+							"value": {
+								"value": "@activity('newwatermarkvalue').output.firstRow.ModifiedDate",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Frameworkdatabasesql",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"copyactivitysqlscriptname": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "OnpremSQLtoADLS"
+		},
+		"annotations": []
+	}
+}
