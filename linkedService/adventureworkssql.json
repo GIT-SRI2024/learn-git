@@ -1,0 +1,21 @@
+{
+	"name": "adventureworkssql",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azurekeyvault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "adventureworksdbconnectionstring"
+			}
+		},
+		"connectVia": {
+			"referenceName": "SHIRonprem",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
