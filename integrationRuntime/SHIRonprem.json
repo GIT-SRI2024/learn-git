@@ -1,0 +1,6 @@
+{
+	"name": "SHIRonprem",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
