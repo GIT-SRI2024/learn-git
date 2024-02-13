@@ -1,0 +1,21 @@
+{
+	"name": "Blobstoragedev001",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azurekeyvault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "blobstorageconnectionstring"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

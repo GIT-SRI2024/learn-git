@@ -1,0 +1,31 @@
+{
+	"name": "DS_DY_ZIp_Para",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlsfilename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlsfolderpath",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlscontainername",
+					"type": "Expression"
+				}
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}

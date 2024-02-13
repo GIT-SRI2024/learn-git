@@ -1,0 +1,19 @@
+{
+	"name": "DS_ADVSQLsource",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adventureworkssql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "onpremsqltoADLS"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": ""
+		}
+	}
+}

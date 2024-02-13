@@ -1,0 +1,12 @@
+{
+	"name": "DS_Azuresql_Zip_Para",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

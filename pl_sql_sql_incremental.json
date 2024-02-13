@@ -1,0 +1,239 @@
+{
+	"name": "pl_sql_sql_incremental",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Getlastwatermarkvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "newwatermarkvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from ',activity('getcopySQltoSQL').output.firstRow.copyactivitysqltablefullname,\n' where ModifiedDate > ','''',activity('Getlastwatermarkvalue').output.firstRow.lastwatermarkvalue,'''',\n' and ModifiedDate <= ','''',\nactivity('newwatermarkvalue').output.firstRow.ModifiedDate,'''')",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '@{activity('getcopySQltoSQL').output.firstRow.copyactivitysqlschemaname}'\nAND TABLE_NAME = '@{activity('getcopySQltoSQL').output.firstRow.copyactivitysqltablename}')\nTRUNCATE TABLE  @{activity('getcopySQltoSQL').output.firstRow.copyactivitysqltablefullname}",
+							"type": "Expression"
+						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADVSQLsource_SQL_SQL",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Framework_SQLtoSQL_Des",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "getcopySQltoSQL",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[getcopyactivitysinkOnpremtoazuresql]",
+						"storedProcedureParameters": {
+							"copyactivitysqlscriptname": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.copyactivitysqlscriptname",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_framework_SQl_SQL",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Getlastwatermarkvalue",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "getcopySQltoSQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[getlastwatermarkvalue]",
+						"storedProcedureParameters": {
+							"copyactivitysqlscriptname": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.copyactivitysqlscriptname",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_framework_SQl_SQL",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "newwatermarkvalue",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "getcopySQltoSQL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select MAX(ModifiedDate) as modifieddate from ', activity('getcopySQltoSQL').output.firstRow.copyactivitysqltablefullname)",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_ADVSQLsource_SQL_SQL",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[logwatermarkvalue]",
+					"storedProcedureParameters": {
+						"copyactivitysqlscriptname": {
+							"value": {
+								"value": "@pipeline().parameters.copyactivitysqlscriptname",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"currentwatermarkvalue": {
+							"value": {
+								"value": "@activity('newwatermarkvalue').output.firstRow.ModifiedDate",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "Frameworkdatabasesql",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"copyactivitysqlscriptname": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "OnpremSQLtoAzuresql"
+		},
+		"annotations": []
+	}
+}

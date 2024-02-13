@@ -1,0 +1,21 @@
+{
+	"name": "Frameworkdatabasesql",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "azurekeyvault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "frameworkdatabaseconnectionstring"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

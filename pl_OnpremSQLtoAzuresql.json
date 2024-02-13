@@ -1,0 +1,113 @@
+{
+	"name": "pl_OnpremSQLtoAzuresql",
+	"properties": {
+		"activities": [
+			{
+				"name": "onpremtosql",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "getonpremtabledata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": {
+							"value": "@activity('getonpremtabledata').output.firstRow.copyactivitysqlquery",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "IF EXISTS(SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '@{activity('getonpremtabledata').output.firstRow.copyactivitysqlschemaname}'\nAND TABLE_NAME = '@{activity('getonpremtabledata').output.firstRow.copyactivitysqltablename}')\nTRUNCATE TABLE  @{activity('getonpremtabledata').output.firstRow.copyactivitysqltablefullname}",
+							"type": "Expression"
+						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_ADVSQLsource_SQL_SQL",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_AZureSQL_Tables",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "getonpremtabledata",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[getcopyactivitysinkOnpremtoazuresql]",
+						"storedProcedureParameters": {
+							"copyactivitysqlscriptname": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.copyactivitysqlscriptname",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_framework_SQl_SQL",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"copyactivitysqlscriptname": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "OnpremSQLtoAzuresql"
+		},
+		"annotations": []
+	}
+}

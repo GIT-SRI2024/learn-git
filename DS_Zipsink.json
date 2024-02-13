@@ -1,0 +1,24 @@
+{
+	"name": "DS_Zipsink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ADLStoSQL"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@concat('stage/adv/csvfiles/','unzip')",
+					"type": "Expression"
+				},
+				"fileSystem": "flslearndev001"
+			}
+		}
+	}
+}

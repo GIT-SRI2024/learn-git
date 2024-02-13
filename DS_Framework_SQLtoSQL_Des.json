@@ -1,0 +1,25 @@
+{
+	"name": "DS_Framework_SQLtoSQL_Des",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OnpremSQLtoAzuresql"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@activity('getcopySQltoSQL').output.firstRow.copyactivitysqlschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@activity('getcopySQltoSQL').output.firstRow.copyactivitysqltablename",
+				"type": "Expression"
+			}
+		}
+	}
+}

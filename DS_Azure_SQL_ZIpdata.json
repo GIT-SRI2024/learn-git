@@ -1,0 +1,22 @@
+{
+	"name": "DS_Azure_SQL_ZIpdata",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@activity('LK_getcopyactivitysinkadlstosql').output.firstRow.copyactivityadlsschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@replace(item().name,'.csv','')",
+				"type": "Expression"
+			}
+		}
+	}
+}

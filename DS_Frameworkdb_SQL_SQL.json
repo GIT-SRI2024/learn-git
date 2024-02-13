@@ -1,0 +1,15 @@
+{
+	"name": "DS_Frameworkdb_SQL_SQL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OnpremSQLtoAzuresql"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
