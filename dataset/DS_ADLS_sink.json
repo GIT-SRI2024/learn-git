@@ -1,0 +1,36 @@
+{
+	"name": "DS_ADLS_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "onpremsqltoADLS"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@activity('getcopyactivitysinksqltoadls').output.firstrow.adlsfilename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@activity('getcopyactivitysinksqltoadls').output.firstrow.adlsfolderpath",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@activity('getcopyactivitysinksqltoadls').output.firstrow.adlscontainername",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

@@ -1,0 +1,22 @@
+{
+	"name": "DS_AZureSQL_Tables",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@activity('getonpremtabledata').output.firstRow.copyactivitysqlschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@activity('getonpremtabledata').output.firstRow.copyactivitysqltablename",
+				"type": "Expression"
+			}
+		}
+	}
+}

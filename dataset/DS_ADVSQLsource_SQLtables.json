@@ -1,0 +1,19 @@
+{
+	"name": "DS_ADVSQLsource_SQLtables",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adventureworkssql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OnpremSQLtoAzuresql"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": ""
+		}
+	}
+}

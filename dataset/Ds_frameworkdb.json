@@ -1,0 +1,25 @@
+{
+	"name": "Ds_frameworkdb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "onpremsqltoADLS"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqlschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqltablename",
+				"type": "Expression"
+			}
+		}
+	}
+}

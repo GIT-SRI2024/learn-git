@@ -1,0 +1,35 @@
+{
+	"name": "DS_CSVFILES_zippath",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ADLStoSQL"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": "stage/adv/csvfiles/unzip/EU_Sales.zip/EU_Sales",
+				"fileSystem": "flslearndev001"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

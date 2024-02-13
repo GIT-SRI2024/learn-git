@@ -1,0 +1,12 @@
+{
+	"name": "DS_opensource_RESTAPI",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_openweather",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

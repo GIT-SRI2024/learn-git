@@ -1,0 +1,29 @@
+{
+	"name": "DS_DY_GETCSVlist_Para",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@concat(activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlsfolderpath,'unzip/',activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlsfilename)",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@activity('LK_getcopyactivitysinkadlstosql').output.firstRow.adlscontainername",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

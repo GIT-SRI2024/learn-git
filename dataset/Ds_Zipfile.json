@@ -1,0 +1,25 @@
+{
+	"name": "Ds_Zipfile",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ADLStoSQL"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "EU_Sales.zip",
+				"folderPath": "stage/adv/csvfiles",
+				"fileSystem": "flslearndev001"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}

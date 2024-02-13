@@ -1,0 +1,16 @@
+{
+	"name": "Ds_RESTAPI_SQLSINK",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Frameworkdatabasesql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "openapitest"
+		}
+	}
+}
