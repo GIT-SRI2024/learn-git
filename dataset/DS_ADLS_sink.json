@@ -1,6 +1,10 @@
 {
 	"name": "DS_ADLS_sink",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_DES_ADLS",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "onpremsqltoADLS"
 		},
