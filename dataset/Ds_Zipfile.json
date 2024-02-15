@@ -1,6 +1,10 @@
 {
 	"name": "Ds_Zipfile",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "ADLStoSQL"
 		},
