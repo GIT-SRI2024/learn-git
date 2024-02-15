@@ -106,7 +106,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"pipeline": {
-												"referenceName": "pl_SQl_ADLS",
+												"referenceName": "pl_Azure SQl_to_ADLS",
 												"type": "PipelineReference"
 											},
 											"waitOnCompletion": true,
@@ -147,7 +147,7 @@
 			}
 		],
 		"folder": {
-			"name": "OnpremSQLtoADLS"
+			"name": "AzuresqltoADLS"
 		},
 		"annotations": []
 	}

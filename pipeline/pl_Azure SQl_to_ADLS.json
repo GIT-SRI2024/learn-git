@@ -25,7 +25,7 @@
 					"source": {
 						"type": "SqlServerSource",
 						"sqlReaderQuery": {
-							"value": "@activity('getcopyactivitysinksqltoadls').output.firstrow.copyactivitysqlquery",
+							"value": "@activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqlquery",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
