@@ -12,8 +12,14 @@
 		"type": "SqlServerTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "",
-			"table": ""
+			"schema": {
+				"value": "@activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqlschemaname",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "\n@activity('getcopyactivitysinksqltoadls').output.firstRow.copyactivitysqltablename",
+				"type": "Expression"
+			}
 		}
 	}
 }
