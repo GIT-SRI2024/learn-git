@@ -1,5 +1,5 @@
 {
-	"name": "pl_SQl_ADLS",
+	"name": "pl_Azure SQl_to_ADLS",
 	"properties": {
 		"activities": [
 			{
@@ -107,7 +107,7 @@
 			}
 		},
 		"folder": {
-			"name": "OnpremSQLtoADLS"
+			"name": "AzuresqltoADLS"
 		},
 		"annotations": []
 	}
