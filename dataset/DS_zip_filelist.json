@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "stage/adv/csvfiles/unzip/EU_Sales.zip/EU_Sales",
+				"folderPath": "stage/adv/csvfiles/unzip/EU_Sales.zip",
 				"fileSystem": "flslearndev001"
 			},
 			"columnDelimiter": ",",
