@@ -1,10 +1,6 @@
 {
 	"name": "Ds_Zipfile",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "ADLStoSQL"
 		},

@@ -1,10 +1,6 @@
 {
 	"name": "DS_Zipsink",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "ADLStoSQL"
 		},

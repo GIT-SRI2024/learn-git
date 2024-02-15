@@ -1,10 +1,6 @@
 {
 	"name": "DS_ADLS_sink",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
-			"type": "LinkedServiceReference"
-		},
 		"folder": {
 			"name": "onpremsqltoADLS"
 		},

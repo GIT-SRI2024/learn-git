@@ -1,10 +1,6 @@
 {
 	"name": "DS_CSVFILES_zippath_Para",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "ws-synapse-learn-dev001-WorkspaceDefaultStorage",
-			"type": "LinkedServiceReference"
-		},
 		"parameters": {
 			"filename": {
 				"type": "string"
