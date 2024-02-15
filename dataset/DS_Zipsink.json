@@ -1,6 +1,10 @@
 {
 	"name": "DS_Zipsink",
 	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
 		"folder": {
 			"name": "ADLStoSQL"
 		},
